@@ -1,0 +1,78 @@
+[DEBUG] 2025-08-02 17:12:30
+Executing slash command: file
+[DEBUG] 2025-08-02 17:12:30
+Calling slash command: strategies.chat.slash_commands.file
+[INFO] 2025-08-02 17:13:01
+Chat request started
+[DEBUG] 2025-08-02 17:13:01
+Authorizing GitHub Copilot token
+[INFO] 2025-08-02 17:13:03
+Request body file: /var/folders/4l/g8tld4j94r5d8pfhlpbn8xz80000gp/T/nvim.ryangst/P0FpHF/1.json
+[DEBUG] 2025-08-02 17:13:03
+Request:
+{ "-sSL", "-D", "/tmp/plenary_curl_f4574a9c.headers", "-X", "POST", "-H", "Authorization: Bearer tid=7fe00a0231119f6b43127e6ddcf8fd1f;exp=1754167382;sku=free_limited_copilot;proxy-ep=proxy.individual.githubcopilot.com;st=dotcom;chat=1;cit=1;malfil=1;editor_preview_features=1;agent_mode=1;mcp=1;ccr=1;rt=1;8kp=1;ip=132.255.16.57;asn=AS263586;cq=3913;rd=1754697600:a7587d7d2f7c7e89d95560cddf59275119f66f76b4881c84714ae5dc223b689d", "-H", "Copilot-Integration-Id: vscode-chat", "-H", "Content-Type: application/json", "-H", "Editor-Version: Neovim/0.11.3", "-d", "@/var/folders/4l/g8tld4j94r5d8pfhlpbn8xz80000gp/T/nvim.ryangst/P0FpHF/1.json", "--retry", "3", "--retry-delay", "1", "--keepalive-time", "60", "--connect-timeout", "10", "--tcp-nodelay", "--no-buffer", "https://api.individual.githubcopilot.com/chat/completions" }
+[DEBUG] 2025-08-02 17:13:05
+Chat request already in progress
+[DEBUG] 2025-08-02 17:13:06
+Chat request already in progress
+[DEBUG] 2025-08-02 17:13:28
+[Subscription] Stopping
+[DEBUG] 2025-08-02 17:13:28
+Chat request cancelled
+[INFO] 2025-08-02 17:13:28
+Chat request finished
+[INFO] 2025-08-02 17:19:15
+Chat request started
+[DEBUG] 2025-08-02 17:19:15
+Authorizing GitHub Copilot token
+[INFO] 2025-08-02 17:19:16
+Request body file: /var/folders/4l/g8tld4j94r5d8pfhlpbn8xz80000gp/T/nvim.ryangst/IzGFU2/1.json
+[DEBUG] 2025-08-02 17:19:16
+Request:
+{ "-sSL", "-D", "/tmp/plenary_curl_f4574a9c.headers", "-X", "POST", "-H", "Editor-Version: Neovim/0.11.3", "-H", "Authorization: Bearer tid=7fe00a0231119f6b43127e6ddcf8fd1f;exp=1754167756;sku=free_limited_copilot;proxy-ep=proxy.individual.githubcopilot.com;st=dotcom;chat=1;cit=1;malfil=1;editor_preview_features=1;agent_mode=1;mcp=1;ccr=1;rt=1;8kp=1;ip=132.255.16.57;asn=AS263586;cq=3913;rd=1754697600:1cbc927d57ef346b6ba1a350c28877324198b4f81840391c68eb888e7b321793", "-H", "Content-Type: application/json", "-H", "Copilot-Integration-Id: vscode-chat", "-d", "@/var/folders/4l/g8tld4j94r5d8pfhlpbn8xz80000gp/T/nvim.ryangst/IzGFU2/1.json", "--retry", "3", "--retry-delay", "1", "--keepalive-time", "60", "--connect-timeout", "10", "--tcp-nodelay", "--no-buffer", "https://api.individual.githubcopilot.com/chat/completions" }
+[DEBUG] 2025-08-02 17:19:18
+Chat request already in progress
+[DEBUG] 2025-08-02 17:19:20
+Chat request already in progress
+[DEBUG] 2025-08-02 17:19:20
+Chat request already in progress
+[DEBUG] 2025-08-02 17:19:20
+Chat request already in progress
+[DEBUG] 2025-08-02 17:19:21
+Chat request already in progress
+[DEBUG] 2025-08-02 17:19:24
+Chat request already in progress
+[DEBUG] 2025-08-02 17:19:24
+Chat request already in progress
+[DEBUG] 2025-08-02 17:19:25
+Chat request already in progress
+[DEBUG] 2025-08-02 17:19:25
+Chat request already in progress
+[DEBUG] 2025-08-02 17:19:25
+Chat request already in progress
+[DEBUG] 2025-08-02 17:19:25
+Chat request already in progress
+[DEBUG] 2025-08-02 17:19:25
+Chat request already in progress
+[DEBUG] 2025-08-02 17:19:25
+Chat request already in progress
+[DEBUG] 2025-08-02 17:19:25
+Chat request already in progress
+[DEBUG] 2025-08-02 17:19:25
+Chat request already in progress
+[DEBUG] 2025-08-02 17:19:48
+Chat request already in progress
+[DEBUG] 2025-08-02 17:19:48
+Chat request already in progress
+[DEBUG] 2025-08-02 17:19:49
+Chat request already in progress
+[DEBUG] 2025-08-02 17:19:49
+Chat request already in progress
+[DEBUG] 2025-08-02 17:19:49
+Chat request already in progress
+[DEBUG] 2025-08-02 17:19:51
+[Subscription] Stopping
+[DEBUG] 2025-08-02 17:19:51
+Chat request cancelled
+[INFO] 2025-08-02 17:19:51
+Chat request finished

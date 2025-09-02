@@ -15,7 +15,6 @@ map("n", "<leader>fN", function()
 end, { desc = "Create File in Buffer Dir" })
 
 -- :lua vim.ui.open(vim.fn.expand('%'))
-
 map("n", "<leader>fO", function()
   local current_file = vim.fn.expand("%")
   if current_file and current_file ~= "" then

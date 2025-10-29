@@ -1,0 +1,48 @@
+return {
+  -- {
+  --   "neovim/nvim-lspconfig",
+  --
+  --   opts = function(_, opts)
+  --     local util = require("lspconfig.util")
+  --     opts = opts or {}
+  --     opts.servers = opts.servers or {}
+  --     opts.setup = opts.setup or {}
+  --
+  --     -- TURN OFF Expert
+  --     opts.servers.expert = false
+  --     opts.setup.expert = function()
+  --       return true
+  --     end -- skip if something tries to set it up
+  --
+  --     -- REMOVE any previous "skip elixirls" hooks you added:
+  --     -- opts.setup.elixirls = function() return true end  -- ← delete this if it exists
+  --
+  --     -- ENABLE ElixirLS
+  --     opts.servers.elixirls = vim.tbl_deep_extend("force", opts.servers.elixirls or {}, {
+  --       cmd = { "elixir-ls" }, -- mason provides this
+  --       filetypes = { "elixir", "eelixir", "heex" },
+  --       root_dir = function(fname)
+  --         return util.root_pattern("mix.exs", ".git")(fname) or util.path.dirname(fname)
+  --       end,
+  --       settings = {
+  --         elixirLS = {
+  --           fetchDeps = true,
+  --           dialyzerEnabled = false, -- turn on later if you want
+  --         },
+  --       },
+  --     })
+  --   end,
+  -- },
+  -- -- ensure the server is installed
+  -- {
+  --   "williamboman/mason-lspconfig.nvim",
+  --   opts = function(_, opts)
+  --     opts = opts or {}
+  --     opts.ensure_installed = opts.ensure_installed or {}
+  --     if not vim.tbl_contains(opts.ensure_installed, "elixirls") then
+  --       table.insert(opts.ensure_installed, "elixirls")
+  --     end
+  --     -- optional: remove expert from ensure_installed if you added it
+  --   end,
+  -- },
+}

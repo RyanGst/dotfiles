@@ -20,7 +20,8 @@ return {
           diff = { builtin = false },
           git = { builtin = false },
         },
-        debug = { scores = false, leaks = false, explorer = false, files = false, proc = true },
+        hidden = true,
+        ignored = true,
         sources = {
           files_with_symbols = {
             multi = { "files", "lsp_symbols" },

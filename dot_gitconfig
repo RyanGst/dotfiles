@@ -6,8 +6,7 @@
 	email = "ryangst.hire@gmail.com"
 [push]
 	autoSetupRemote = true
-[credential]
-	helper = manager
+
 [commit]
 	gpgsign = true
 
@@ -25,8 +24,8 @@
   light = false      # set to true if you're in a terminal w/ a light background color (e.g. the default macOS terminal)
   side-by-side = false
   line-numbers = true
-  syntax-theme = tokyonight_moon
+  syntax-theme = tokyonight_night
 
 [include]
-  path = ~/.config/bat/themes/tokyonight.nvim/extras/delta/tokyonight_moon.gitconfig
+  path = ~/.config/bat/themes/tokyonight.nvim/extras/delta/tokyonight_night.gitconfig
 

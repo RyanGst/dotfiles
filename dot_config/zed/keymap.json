@@ -73,7 +73,9 @@
       // New file
       "space f n": "workspace::NewFile",
       // Open recent project
-      "space f p": "projects::OpenRecent",
+      "space f r": "projects::OpenRecent",
+
+      "space f f": "file_finder::Toggle",
       // Search in all the files
       "space s g": "workspace::NewSearch",
       // Quit zed
@@ -118,42 +120,15 @@
       // Search word under cursor in all panes
       "space s W": "pane::DeploySearch",
       // Tab things. Almost as good as harpoon.
-      "space 1": [
-        "pane::ActivateItem",
-        0
-      ],
-      "space 2": [
-        "pane::ActivateItem",
-        1
-      ],
-      "space 3": [
-        "pane::ActivateItem",
-        2
-      ],
-      "space 4": [
-        "pane::ActivateItem",
-        3
-      ],
-      "space 5": [
-        "pane::ActivateItem",
-        4
-      ],
-      "space 6": [
-        "pane::ActivateItem",
-        5
-      ],
-      "space 7": [
-        "pane::ActivateItem",
-        6
-      ],
-      "space 8": [
-        "pane::ActivateItem",
-        7
-      ],
-      "space 9": [
-        "pane::ActivateItem",
-        8
-      ],
+      "space 1": ["pane::ActivateItem", 0],
+      "space 2": ["pane::ActivateItem", 1],
+      "space 3": ["pane::ActivateItem", 2],
+      "space 4": ["pane::ActivateItem", 3],
+      "space 5": ["pane::ActivateItem", 4],
+      "space 6": ["pane::ActivateItem", 5],
+      "space 7": ["pane::ActivateItem", 6],
+      "space 8": ["pane::ActivateItem", 7],
+      "space 9": ["pane::ActivateItem", 8],
       "space 0": "pane::ActivateLastItem",
       "] b": "pane::ActivateNextItem",
       "[ b": "pane::ActivatePreviousItem",
@@ -224,26 +199,11 @@
   {
     "context": "VimControl && !menu",
     "bindings": {
-      "ctrl-d": [
-        "workspace::SendKeystrokes",
-        "ctrl-d z z"
-      ],
-      "ctrl-u": [
-        "workspace::SendKeystrokes",
-        "ctrl-u z z"
-      ],
-      "n": [
-        "workspace::SendKeystrokes",
-        "n z z z v"
-      ],
-      "shift-n": [
-        "workspace::SendKeystrokes",
-        "shift-n z z z v"
-      ],
-      "shift-g": [
-        "workspace::SendKeystrokes",
-        "shift-g z z"
-      ],
+      "ctrl-d": ["workspace::SendKeystrokes", "ctrl-d z z"],
+      "ctrl-u": ["workspace::SendKeystrokes", "ctrl-u z z"],
+      "n": ["workspace::SendKeystrokes", "n z z z v"],
+      "shift-n": ["workspace::SendKeystrokes", "shift-n z z z v"],
+      "shift-g": ["workspace::SendKeystrokes", "shift-g z z"],
       "g r": "editor::FindAllReferences"
     }
   },
@@ -274,6 +234,6 @@
       "alt-down": "editor::MoveLineDown",
       "ctrl-shift-right": "editor::SelectLargerSyntaxNode",
       "ctrl-shift-left": "editor::SelectSmallerSyntaxNode"
-    },
+    }
   }
 ]

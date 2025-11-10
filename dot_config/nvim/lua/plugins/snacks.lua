@@ -5,6 +5,11 @@ return {
     "snacks.nvim",
     ---@type snacks.Config
     opts = {
+      dashboard = {
+        preset = {
+          header = "",
+        },
+      },
       statuscolumn = { folds = { open = false } },
       notifier = { sort = { "added" } },
       scroll = { debug = false },

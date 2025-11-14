@@ -1,0 +1,5 @@
+[providers.""]
+type = "plain"
+
+[secrets]
+CIPHER_KEY_FLUTTER_APPS= { provider = "", value = "BAu992QwW9*J4B/A:q3k<q8+8gX+8;" }

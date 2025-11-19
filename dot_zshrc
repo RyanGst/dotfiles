@@ -147,4 +147,7 @@ eval "$(~/.local/bin/mise activate zsh)"
 export PATH="$HOME/.local/bin:$PATH"
 eval "$(mise activate zsh)"
 export XDG_CONFIG_HOME="$HOME/.config"
+export PATH="$PATH":"$HOME/.pub-cache/bin"
+export PATH="${HOME}/Library/Android/sdk/tools:${HOME}/Library/Android/sdk/platform-tools:${PATH}"
+
 

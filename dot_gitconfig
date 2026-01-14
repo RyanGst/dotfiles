@@ -10,11 +10,9 @@
   rebase = true
 [merge]
 tool = intellij
-[mergetool "intellij"]
-cmd= idea merge "$LOCAL" "$REMOTE" "$BASE" "$MERGED"
-trustExitCode = true
-[mergetool]
-keepBackup = false 
+
+[mergetool "idea"]
+    cmd = idea merge "$LOCAL" "$REMOTE" "$BASE" "$MERGED"
 
 [commit]
 	gpgsign = true

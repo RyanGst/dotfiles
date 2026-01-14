@@ -31,31 +31,17 @@ set smartindent
 
 " Clipboard integration
 set clipboard=unnamedplus
-
-" Timeouts + which-key
-" (Optional) Enable which-key plugin
-source ~/.intellimacs/which-key.vim
 " Map <Space> as <Leader>
 let mapleader = " "
 
 " Don't use Ex mode, use Q for formatting.
 nnoremap Q gq
 
-
-set which-key
-
-" disable the timeout option
-set notimeout
-
-" increase the timeoutlen (default: 1000), don't add space around the equal sign
-set timeoutlen=5000
-
 " -----------------------------
 " IdeaVim-specific goodies
 " -----------------------------
 " Use IDE formatter for = commands
 set ideajoin
-set idearefactormode=keep
 
 " Use :action to inspect actions if needed:
 "   :actionlist
@@ -67,10 +53,11 @@ set idearefactormode=keep
 " -----------------------------
 Plug 'machakann/vim-highlightedyank' " highlight yanked text
 Plug 'tpope/vim-commentary'          " gc motions for comments
-" Plug 'easymotion/vim-easymotion'   " enable if you like EasyMotion
-
+Plug 'easymotion/vim-easymotion'   " enable if you like EasyMotion
+Plug 'preservim/nerdtree'
+set easymotion
 " -----------------------------
-" Basic leader mappings
+" Basic leader mappings (LazyVim-ish)
 " -----------------------------
 " Save / quit
 nnoremap <leader>w :w<CR>
@@ -78,13 +65,17 @@ nnoremap <leader>q :q<CR>
 nnoremap <leader>Q :q!<CR>
 nnoremap <leader>x :x<CR>
 
-nnoremap <leader><leader> :action SearchEverywhere<CR>
-
-" Clear search highlight
-nnoremap <leader>h :nohlsearch<CR>
+" nnoremap <leader><leader> :action SearchEverywhere<CR>
 
 " Toggle relative numbers
 nnoremap <leader>nr :set relativenumber!<CR>
+
+" Files
+nnoremap <leader>ff :action GotoFile<CR>
+nnoremap <leader>fr :action RecentFiles<CR>
+
+" Search
+nnoremap <leader>sg :action SearchEverywhere<CR>
 
 " -----------------------------
 " Window / buffer navigation
@@ -95,11 +86,6 @@ nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 
-" Resize splits
-nnoremap <leader>= :resize +5<CR>
-nnoremap <leader>- :resize -5<CR>
-nnoremap <leader>> :vertical resize +5<CR>
-nnoremap <leader>< :vertical resize -5<CR>
 
 " Buffers / tabs
 nnoremap <leader>bn :bnext<CR>
@@ -110,9 +96,9 @@ nnoremap <leader>bd :bdelete<CR>
 " Commenting (vim-commentary)
 " -----------------------------
 " Line comment toggle
-nnoremap <leader>/ :Commentary<CR>
+nnoremap gcc :Commentary<CR>
 " Visual mode: use <leader>/ as well
-xnoremap <leader>/ :Commentary<CR>
+xnoremap gcc :Commentary<CR>
 
 " Text objects / quality of life
 " -----------------------------
@@ -120,15 +106,6 @@ xnoremap <leader>/ :Commentary<CR>
 xnoremap J :move '>+1<CR>gv=gv
 xnoremap K :move '<-2<CR>gv=gv
 
-" Keep cursor in the middle when jumping
-nnoremap n nzzzv
-nnoremap N Nzzzv
-nnoremap J mzJ`z
-nnoremap <C-d> <C-d>zz
-nnoremap <C-u> <C-u>zz
-
-" Better Y: yank to end of line (Vim 9 default, but not in IdeaVim yet)
-nnoremap Y y$
 
 " -----------------------------
 " EasyMotion (optional)

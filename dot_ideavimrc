@@ -1,0 +1,140 @@
+" .ideavimrc is a configuration file for the IdeaVim plugin.
+" Docs: https://jb.gg/h38q75
+" Share: https://jb.gg/share-ideavimrc
+
+" -----------------------------
+" Core options
+" -----------------------------
+set nocompatible
+
+" Show a few lines of context around the cursor
+set scrolloff=5
+
+" Search
+set incsearch        " incremental search
+set hlsearch         " highlight matches
+set ignorecase       " case-insensitive by default
+set smartcase        " ...but case-sensitive if pattern has uppercase
+
+" Line numbers / UX
+set number
+set relativenumber
+set cursorline
+set showmode
+set showcmd
+
+" Indent / tabs (Idea will still enforce code style, but motions feel nicer)
+set expandtab
+set shiftwidth=2
+set tabstop=2
+set smartindent
+
+" Clipboard integration
+set clipboard=unnamedplus
+
+" Timeouts + which-key
+" (Optional) Enable which-key plugin
+source ~/.intellimacs/which-key.vim
+" Map <Space> as <Leader>
+let mapleader = " "
+
+" Don't use Ex mode, use Q for formatting.
+nnoremap Q gq
+
+
+set which-key
+
+" disable the timeout option
+set notimeout
+
+" increase the timeoutlen (default: 1000), don't add space around the equal sign
+set timeoutlen=5000
+
+" -----------------------------
+" IdeaVim-specific goodies
+" -----------------------------
+" Use IDE formatter for = commands
+set ideajoin
+set idearefactormode=keep
+
+" Use :action to inspect actions if needed:
+"   :actionlist
+"   :action <name>
+
+" -----------------------------
+" Plugins (IdeaVim plugin system)
+" https://jb.gg/ideavim-plugins
+" -----------------------------
+Plug 'machakann/vim-highlightedyank' " highlight yanked text
+Plug 'tpope/vim-commentary'          " gc motions for comments
+" Plug 'easymotion/vim-easymotion'   " enable if you like EasyMotion
+
+" -----------------------------
+" Basic leader mappings
+" -----------------------------
+" Save / quit
+nnoremap <leader>w :w<CR>
+nnoremap <leader>q :q<CR>
+nnoremap <leader>Q :q!<CR>
+nnoremap <leader>x :x<CR>
+
+nnoremap <leader><leader> :action SearchEverywhere<CR>
+
+" Clear search highlight
+nnoremap <leader>h :nohlsearch<CR>
+
+" Toggle relative numbers
+nnoremap <leader>nr :set relativenumber!<CR>
+
+" -----------------------------
+" Window / buffer navigation
+" -----------------------------
+" Faster split navigation
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+
+" Resize splits
+nnoremap <leader>= :resize +5<CR>
+nnoremap <leader>- :resize -5<CR>
+nnoremap <leader>> :vertical resize +5<CR>
+nnoremap <leader>< :vertical resize -5<CR>
+
+" Buffers / tabs
+nnoremap <leader>bn :bnext<CR>
+nnoremap <leader>bp :bprevious<CR>
+nnoremap <leader>bd :bdelete<CR>
+
+" -----------------------------
+" Commenting (vim-commentary)
+" -----------------------------
+" Line comment toggle
+nnoremap <leader>/ :Commentary<CR>
+" Visual mode: use <leader>/ as well
+xnoremap <leader>/ :Commentary<CR>
+
+" Text objects / quality of life
+" -----------------------------
+" Move selected block up/down (keeps selection)
+xnoremap J :move '>+1<CR>gv=gv
+xnoremap K :move '<-2<CR>gv=gv
+
+" Keep cursor in the middle when jumping
+nnoremap n nzzzv
+nnoremap N Nzzzv
+nnoremap J mzJ`z
+nnoremap <C-d> <C-d>zz
+nnoremap <C-u> <C-u>zz
+
+" Better Y: yank to end of line (Vim 9 default, but not in IdeaVim yet)
+nnoremap Y y$
+
+" -----------------------------
+" EasyMotion (optional)
+" -----------------------------
+" Uncomment if you actually want it
+" nmap <leader><leader>w <Plug>(easymotion-w)
+" nmap <leader><leader>f <Plug>(easymotion-f)
+" nmap <leader><leader>j <Plug>(easymotion-j)
+" nmap <leader><leader>k <Plug>(easymotion-k)

@@ -56,6 +56,13 @@ Plug 'tpope/vim-commentary'          " gc motions for comments
 Plug 'easymotion/vim-easymotion'   " enable if you like EasyMotion
 Plug 'preservim/nerdtree'
 set easymotion
+set which-key
+
+" disable the timeout option
+set notimeout
+
+" increase the timeoutlen (default: 1000), don't add space around the equal sign
+set timeoutlen=5000
 " -----------------------------
 " Basic leader mappings (LazyVim-ish)
 " -----------------------------
@@ -64,6 +71,7 @@ nnoremap <leader>w :w<CR>
 nnoremap <leader>q :q<CR>
 nnoremap <leader>Q :q!<CR>
 nnoremap <leader>x :x<CR>
+nnoremap <C-s> :w<CR>
 
 " nnoremap <leader><leader> :action SearchEverywhere<CR>
 
@@ -76,6 +84,8 @@ nnoremap <leader>fr :action RecentFiles<CR>
 
 " Search
 nnoremap <leader>sg :action SearchEverywhere<CR>
+nnoremap <leader>gg :action ActivateVersionControlToolWindow<CR>
+
 
 " -----------------------------
 " Window / buffer navigation
@@ -91,6 +101,8 @@ nnoremap <C-l> <C-w>l
 nnoremap <leader>bn :bnext<CR>
 nnoremap <leader>bp :bprevious<CR>
 nnoremap <leader>bd :bdelete<CR>
+nnoremap H :bprevious<CR>
+nnoremap L :bnext<CR>
 
 " -----------------------------
 " Commenting (vim-commentary)

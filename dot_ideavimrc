@@ -72,6 +72,7 @@ nnoremap <leader>q :q<CR>
 nnoremap <leader>Q :q!<CR>
 nnoremap <leader>x :x<CR>
 nnoremap <C-s> :w<CR>
+nnoremap <C-w> :wq<CR>
 
 " nnoremap <leader><leader> :action SearchEverywhere<CR>
 
@@ -84,7 +85,10 @@ nnoremap <leader>fr :action RecentFiles<CR>
 
 " Search
 nnoremap <leader>sg :action SearchEverywhere<CR>
-nnoremap <leader>gg :action ActivateVersionControlToolWindow<CR>
+nnoremap <leader>gg :action ActivateCommitToolWindow<CR>
+nnoremap <leader>e :action ActivateProjectToolWindow<CR>
+nnoremap <leader>ca :action ShowIntentionActions<CR>
+nnoremap <leader>co :action OptimizeImports<CR>
 
 
 " -----------------------------

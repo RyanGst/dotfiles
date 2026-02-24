@@ -1,0 +1,33 @@
+#!/usr/bin/env zsh
+
+DIR="${1:-$(pwd)}"
+SESSION="ide-$(basename "$DIR")"
+
+# Kill existing session with same name
+tmux kill-session -t "$SESSION" 2>/dev/null
+
+# Create new session, first window, main pane (neovim)
+tmux new-session -d -s "$SESSION" -c "$DIR"
+
+# Split right vertically (opencode)
+tmux split-window -h -p 10 -c "$DIR"
+
+# Split bottom horizontal from the right pane (terminal)
+tmux split-window -v -c "$DIR"
+
+# Go back to left pane and open neovim
+tmux select-pane -t 0
+tmux send-keys "nvim ." Enter
+
+# Open opencode in right-top pane
+tmux select-pane -t 1
+tmux send-keys "opencode" Enter
+
+# Leave bottom-right as clean terminal, select it
+tmux select-pane -t 2
+
+# Resize: make bottom pane shorter (optional tweak)
+tmux resize-pane -t 2 -y 10
+
+# Attach
+tmux attach-session -t "$SESSION"

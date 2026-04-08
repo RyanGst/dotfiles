@@ -2,14 +2,14 @@
 	format = ssh
 [user]
 	signingkey = /Users/ryangst/.ssh/id_ed25519_sign.pub
-	name = Ryan
-	email = "ryangst.hire@gmail.com"
+	name = "Ryan Machado"
+	email = "me@ryanmac.dev"
 [push]
 	autoSetupRemote = true
 [pull]
   rebase = true
 [merge]
-tool = intellij
+tool = idea
 
 [mergetool "idea"]
     cmd = idea merge "$LOCAL" "$REMOTE" "$BASE" "$MERGED"

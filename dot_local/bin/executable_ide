@@ -1,33 +1,29 @@
 #!/usr/bin/env zsh
+AGENT="claude"
+[[ "$1" == "-o" || "$1" == "--opencode" ]] && { AGENT="opencode --port"; shift; }
+[[ "$1" == "-c" || "$1" == "--claude" ]]  && shift
 
-DIR="${1:-$(pwd)}"
-SESSION="ide-$(basename "$DIR")"
+DIR="${${1:-$PWD}:A}"
+NAME="ide-${${${DIR//\//_}#_}//./_}"
 
-# Kill existing session with same name
-tmux kill-session -t "$SESSION" 2>/dev/null
+build() {
+  local target="$1"
+  tmux split-window -h -l 30% -c "$DIR" -t "$target" "$AGENT"
+  tmux split-window -v -l 50% -c "$DIR" -t "${target}.1" "$SHELL"
+  tmux select-pane -t "${target}.0"
+}
 
-# Create new session, first window, main pane (neovim)
-tmux new-session -d -s "$SESSION" -c "$DIR"
-
-# Split right vertically (opencode)
-tmux split-window -h -p 10 -c "$DIR"
-
-# Split bottom horizontal from the right pane (terminal)
-tmux split-window -v -c "$DIR"
-
-# Go back to left pane and open neovim
-tmux select-pane -t 0
-tmux send-keys "nvim ." Enter
-
-# Open opencode in right-top pane
-tmux select-pane -t 1
-tmux send-keys "opencode" Enter
-
-# Leave bottom-right as clean terminal, select it
-tmux select-pane -t 2
-
-# Resize: make bottom pane shorter (optional tweak)
-tmux resize-pane -t 2 -y 10
-
-# Attach
-tmux attach-session -t "$SESSION"
+if [[ -n "$TMUX" ]]; then
+  if tmux list-windows -F '#{window_name}' 2>/dev/null | grep -qxF "$NAME"; then
+    exec tmux select-window -t "$NAME"
+  fi
+  tmux new-window -n "$NAME" -c "$DIR" nvim .
+  build "$NAME"
+else
+  if tmux has-session -t "=$NAME" 2>/dev/null; then
+    exec tmux attach-session -t "$NAME"
+  fi
+  tmux new-session -d -s "$NAME" -n "$NAME" -c "$DIR" nvim .
+  build "$NAME"
+  exec tmux attach-session -t "$NAME"
+fi

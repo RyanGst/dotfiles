@@ -1,0 +1,248 @@
+#!/usr/bin/env python3
+
+import argparse
+import json
+import re
+import shlex
+import shutil
+import subprocess
+import sys
+from typing import Iterable
+
+
+DEFAULT_PROTECTED_REGEX = (
+    r"^(main|master|develop|development|dev|staging|stage|uat|"
+    r"production|prod|release|trunk)$"
+)
+
+
+def require_bin(name: str) -> None:
+    if shutil.which(name) is None:
+        print(f"Missing required command: {name}", file=sys.stderr)
+        sys.exit(1)
+
+
+def run_capture(args: list[str]) -> str:
+    result = subprocess.run(
+        args,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+
+    if result.returncode != 0:
+        print(f"Command failed: {shlex.join(args)}", file=sys.stderr)
+        print(result.stderr.strip(), file=sys.stderr)
+        sys.exit(result.returncode)
+
+    return result.stdout.strip()
+
+
+def run(args: list[str], dry_run: bool) -> None:
+    if dry_run:
+        print(f"[dry-run] {shlex.join(args)}")
+        return
+
+    subprocess.run(args, check=True)
+
+
+def lines(output: str) -> list[str]:
+    return [line.strip() for line in output.splitlines() if line.strip()]
+
+
+def get_default_branch() -> str:
+    raw = run_capture(["gh", "repo", "view", "--json", "defaultBranchRef"])
+    data = json.loads(raw)
+    return data["defaultBranchRef"]["name"]
+
+
+def get_open_pr_branch_names() -> set[str]:
+    raw = run_capture(
+        [
+            "gh",
+            "pr",
+            "list",
+            "--state",
+            "open",
+            "--limit",
+            "1000",
+            "--json",
+            "headRefName",
+        ]
+    )
+
+    prs = json.loads(raw)
+    return {pr["headRefName"] for pr in prs if pr.get("headRefName")}
+
+
+def get_current_branch() -> str | None:
+    try:
+        branch = run_capture(["git", "branch", "--show-current"])
+        return branch or None
+    except SystemExit:
+        return None
+
+
+def is_protected(
+    branch: str,
+    *,
+    base: str,
+    current_branch: str | None,
+    open_pr_branches: set[str],
+    protected_regex: re.Pattern[str],
+) -> bool:
+    if branch == base:
+        return True
+
+    if current_branch and branch == current_branch:
+        return True
+
+    if protected_regex.search(branch):
+        return True
+
+    if branch in open_pr_branches:
+        return True
+
+    return False
+
+
+def iter_local_merged_branches(remote: str, base: str) -> Iterable[str]:
+    output = run_capture(
+        [
+            "git",
+            "branch",
+            "--merged",
+            f"{remote}/{base}",
+            "--format=%(refname:short)",
+        ]
+    )
+    yield from lines(output)
+
+
+def iter_remote_merged_branches(remote: str, base: str) -> Iterable[str]:
+    output = run_capture(
+        [
+            "git",
+            "branch",
+            "-r",
+            "--merged",
+            f"{remote}/{base}",
+            "--format=%(refname:short)",
+        ]
+    )
+
+    prefix = f"{remote}/"
+
+    for ref in lines(output):
+        if ref == f"{remote}/HEAD":
+            continue
+
+        if not ref.startswith(prefix):
+            continue
+
+        yield ref.removeprefix(prefix)
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(
+        description="Delete stale local and remote branches, excluding branches with open PRs."
+    )
+
+    parser.add_argument(
+        "--remote",
+        default="origin",
+        help="Git remote to clean. Default: origin.",
+    )
+
+    parser.add_argument(
+        "--base",
+        default=None,
+        help="Base branch. Default: GitHub repository default branch.",
+    )
+
+    parser.add_argument(
+        "--yes",
+        action="store_true",
+        help="Actually delete branches. Without this flag, runs in dry-run mode.",
+    )
+
+    parser.add_argument(
+        "--local-only",
+        action="store_true",
+        help="Only delete local branches.",
+    )
+
+    parser.add_argument(
+        "--remote-only",
+        action="store_true",
+        help="Only delete remote branches.",
+    )
+
+    parser.add_argument(
+        "--protected-regex",
+        default=DEFAULT_PROTECTED_REGEX,
+        help="Regex for branch names that must never be deleted.",
+    )
+
+    args = parser.parse_args()
+
+    require_bin("git")
+    require_bin("gh")
+
+    if args.local_only and args.remote_only:
+        print("Cannot use --local-only and --remote-only together.", file=sys.stderr)
+        sys.exit(1)
+
+    dry_run = not args.yes
+    remote = args.remote
+    base = args.base or get_default_branch()
+    protected_regex = re.compile(args.protected_regex)
+
+    print(f"Remote: {remote}")
+    print(f"Base branch: {base}")
+    print(f"Mode: {'delete' if not dry_run else 'dry-run'}")
+    print()
+
+    run(["git", "fetch", remote, "--prune"], dry_run=False)
+
+    open_pr_branches = get_open_pr_branch_names()
+    current_branch = get_current_branch()
+
+    print(f"Open PR branches excluded: {len(open_pr_branches)}")
+    print()
+
+    if not args.remote_only:
+        print("Local merged branches:")
+        for branch in iter_local_merged_branches(remote, base):
+            if is_protected(
+                branch,
+                base=base,
+                current_branch=current_branch,
+                open_pr_branches=open_pr_branches,
+                protected_regex=protected_regex,
+            ):
+                print(f"skip local: {branch}")
+                continue
+
+            run(["git", "branch", "-d", branch], dry_run=dry_run)
+
+        print()
+
+    if not args.local_only:
+        print("Remote merged branches:")
+        for branch in iter_remote_merged_branches(remote, base):
+            if is_protected(
+                branch,
+                base=base,
+                current_branch=current_branch,
+                open_pr_branches=open_pr_branches,
+                protected_regex=protected_regex,
+            ):
+                print(f"skip remote: {branch}")
+                continue
+
+            run(["git", "push", remote, "--delete", branch], dry_run=dry_run)
+
+
+if __name__ == "__main__":
+    main()

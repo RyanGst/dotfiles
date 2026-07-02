@@ -1,14 +1,17 @@
 #!/usr/bin/env zsh
-AGENT="claude"
+AGENT="claude --ide"
+readonly SIDEBAR_PERCENT=20
 [[ "$1" == "-o" || "$1" == "--opencode" ]] && { AGENT="opencode --port"; shift; }
 [[ "$1" == "-c" || "$1" == "--claude" ]]  && shift
 
 DIR="${${1:-$PWD}:A}"
-NAME="ide-${${${DIR//\//_}#_}//./_}"
+PARENT="${${DIR:h}:t}"
+CURRENT="${DIR:t}"
+NAME="${${:-ide-${PARENT}_${CURRENT}}//./_}"
 
 build() {
   local target="$1"
-  tmux split-window -h -l 30% -c "$DIR" -t "$target" "$AGENT"
+  tmux split-window -h -p "$SIDEBAR_PERCENT" -c "$DIR" -t "$target" "$AGENT; exec \"$SHELL\" -l"
   tmux split-window -v -l 50% -c "$DIR" -t "${target}.1" "$SHELL"
   tmux select-pane -t "${target}.0"
 }
@@ -17,13 +20,13 @@ if [[ -n "$TMUX" ]]; then
   if tmux list-windows -F '#{window_name}' 2>/dev/null | grep -qxF "$NAME"; then
     exec tmux select-window -t "$NAME"
   fi
-  tmux new-window -n "$NAME" -c "$DIR" nvim .
+  tmux new-window -n "$NAME" -c "$DIR" "nvim .; exec \"$SHELL\" -l"
   build "$NAME"
 else
   if tmux has-session -t "=$NAME" 2>/dev/null; then
     exec tmux attach-session -t "$NAME"
   fi
-  tmux new-session -d -s "$NAME" -n "$NAME" -c "$DIR" nvim .
+  tmux new-session -d -s "$NAME" -n "$NAME" -c "$DIR" "nvim .; exec \"$SHELL\" -l"
   build "$NAME"
   exec tmux attach-session -t "$NAME"
 fi

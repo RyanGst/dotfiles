@@ -8,7 +8,7 @@ auto-update-channel = tip
 desktop-notifications = true
 window-save-state = always
 confirm-close-surface=false 
-
+macos-icon = paper
 initial-command = /bin/zsh -l -c "if tmux has-session 2>/dev/null; then tmux attach; else tmux new -s lab; fi"
 
 # This is the configuration file for Ghostty.

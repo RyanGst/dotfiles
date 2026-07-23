@@ -27,7 +27,21 @@ return {
         },
         hidden = true,
         ignored = true,
+        exclude = { "node_modules", "vendor" },
         sources = {
+          explorer = {
+            layout = {
+              preset = "right",
+              preview = false,
+            },
+            win = {
+              list = {
+                keys = {
+                  ["<C-l>"] = "tmux_navigate_right",
+                },
+              },
+            },
+          },
           files_with_symbols = {
             multi = { "files", "lsp_symbols" },
             filter = {
@@ -56,6 +70,12 @@ return {
         },
         actions = {
           yankit = { action = "yank", notify = true },
+          tmux_navigate_right = function()
+            local pane = vim.env.TMUX_PANE
+            if pane and pane ~= "" then
+              vim.fn.system({ "tmux", "select-pane", "-t", pane, "-R" })
+            end
+          end,
           toggle_lua = function(p)
             local opts = p.opts --[[@as snacks.picker.grep.Config]]
             opts.ft = not opts.ft and "lua" or nil
@@ -72,6 +92,7 @@ return {
       { "<leader><space>", function() Snacks.picker.smart() end, desc = "Smart Open" },
       { "<leader>dd", function() Snacks.picker.grep({search = "^(?!\\s*--).*\\b(bt|dd)\\(", args = {"-P"}, live = false, ft = "lua"}) end, desc = "Debug Searcher" },
       { "<leader>t", function() Snacks.scratch({ icon = " ", name = "Todo", ft = "markdown", file = "~/dot/TODO.md" }) end, desc = "Todo List" },
+      { "<leader>ct", function() local dir = vim.fn.expand("%:p:h") if dir == "" or vim.bo.buftype ~= "" then dir = vim.fn.getcwd() end Snacks.terminal(nil, { cwd = dir }) end, desc = "Terminal (file dir)" },
    },
   },
 }

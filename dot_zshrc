@@ -89,14 +89,11 @@ source $ZSH/oh-my-zsh.sh
 # export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='nvim'
-# fi
-
-export EDITOR="nvim"
-
+if [[ -n $SSH_CONNECTION ]]; then
+  export EDITOR='vim'
+else
+  export EDITOR='nvim'
+fi
 
 # Compilation flags
 # export ARCHFLAGS="-arch $(uname -m)"
@@ -115,12 +112,13 @@ export EDITOR="nvim"
 alias c="clear"
 alias cat="bat --paging=never"
 alias ll="eza -lla --color=always --group-directories-first"
+alias zbr="zig build run"
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 
 # pnpm
-export PNPM_HOME="/Users/ryangst/Library/pnpm"
+export PNPM_HOME="$HOME/Library/pnpm"
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
@@ -128,26 +126,109 @@ esac
 # pnpm end
 
 . "$HOME/.local/bin/env"
-. "/Users/ryangst/.deno/env"
+. "$HOME/.deno/env"
 # bun completions
-[ -s "/Users/ryangst/.bun/_bun" ] && source "/Users/ryangst/.bun/_bun"
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
-export PATH="/Users/ryangst/Library/zls/0.14.0:$PATH"
+export PATH="$HOME/Library/zls/0.14.0:$PATH"
 
 
 eval "$(starship init zsh)"
 export PATH="$HOME/.local/bin:$PATH"
 eval "$(mise activate zsh)"
 
-eval "$(/Users/ryangst/.local/bin/mise activate zsh)" # added by https://mise.run/zsh
+eval "$("$HOME/.local/bin/mise" activate zsh)" # added by https://mise.run/zsh
 eval "$(~/.local/bin/mise activate zsh)"
 export PATH="$HOME/.local/bin:$PATH"
 eval "$(mise activate zsh)"
 export XDG_CONFIG_HOME="$HOME/.config"
 export PATH="$PATH":"$HOME/.pub-cache/bin"
 export PATH="${HOME}/Library/Android/sdk/tools:${HOME}/Library/Android/sdk/platform-tools:${HOME}/Library/Android/sdk/cmdline-tools/latest/bin:${PATH}"
+export ANDROID_SDK_ROOT="$HOME/Library/Android/sdk"
+
+export PATH=$PATH:$HOME/.maestro/bin
+# The following lines have been added by Docker Desktop to enable Docker CLI completions.
+fpath=("$HOME/.docker/completions" $fpath)
+autoload -Uz compinit
+compinit
+# End of Docker CLI completions
+
+# opencode
+export PATH="$HOME/.opencode/bin:$PATH"
+#compdef opencode
+###-begin-opencode-completions-###
+#
+# yargs command completion script
+#
+# Installation: opencode completion >> ~/.zshrc
+#    or opencode completion >> ~/.zprofile on OSX.
+#
+_opencode_yargs_completions()
+{
+  local reply
+  local si=$IFS
+  IFS=$'
+' reply=($(COMP_CWORD="$((CURRENT-1))" COMP_LINE="$BUFFER" COMP_POINT="$CURSOR" opencode --get-yargs-completions "${words[@]}"))
+  IFS=$si
+  if [[ ${#reply} -gt 0 ]]; then
+    _describe 'values' reply
+  else
+    _default
+  fi
+}
+if [[ "'${zsh_eval_context[-1]}" == "loadautofunc" ]]; then
+  _opencode_yargs_completions "$@"
+else
+  compdef _opencode_yargs_completions opencode
+fi
+###-end-opencode-completions-###
 
 
+# Vite+ bin (https://viteplus.dev)
+. "$HOME/.vite-plus/env"
+
+# Keep AWS_PROFILE aligned with the last successful IAM Identity Center login.
+if [[ -r "$HOME/.aws/active-profile" ]]; then
+  export AWS_PROFILE="$(<"$HOME/.aws/active-profile")"
+fi
+
+aws() {
+  local profile=""
+  local index
+
+  if [[ "$1" == "sso" && "$2" == "login" ]]; then
+    for (( index = 1; index <= $#; index++ )); do
+      if [[ "${argv[index]}" == "--profile" && index -lt $# ]]; then
+        profile="${argv[index + 1]}"
+        break
+      fi
+
+      if [[ "${argv[index]}" == --profile=* ]]; then
+        profile="${argv[index]#--profile=}"
+        break
+      fi
+    done
+  fi
+
+  command aws "$@"
+  local exit_code=$?
+
+  if (( exit_code == 0 )) && [[ -n "$profile" ]]; then
+    export AWS_PROFILE="$profile"
+    print -r -- "$profile" >| "$HOME/.aws/active-profile"
+  fi
+
+  return $exit_code
+}
+
+ [ -f ~/.secrets ] && source ~/.secrets
+
+# qlty
+export QLTY_INSTALL="$HOME/.qlty"
+export PATH="$QLTY_INSTALL/bin:$PATH"
+
+# cloudflare
+export CLOUDFLARE_ACCOUNT_ID=2987919c57179393623a794120699ef2

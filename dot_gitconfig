@@ -41,6 +41,3 @@
 	path = ~/.gitconfig-work
 [includeIf "gitdir:~/.claude/"]
 	path = ~/.gitconfig-work
-[url "ssh://git@github-work/Twiage/"]
-	insteadOf = https://github.com/Twiage/
-	insteadOf = git@github.com:Twiage/

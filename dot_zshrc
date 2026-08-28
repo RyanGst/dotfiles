@@ -118,10 +118,10 @@ alias zbr="zig build run"
 
 
 # pnpm
-export PNPM_HOME="$HOME/Library/pnpm"
+export PNPM_HOME="/Users/ryangst/Library/pnpm"
 case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
+  *":$PNPM_HOME/bin:"*) ;;
+  *) export PATH="$PNPM_HOME/bin:$PATH" ;;
 esac
 # pnpm end
 
@@ -232,3 +232,8 @@ export PATH="$QLTY_INSTALL/bin:$PATH"
 
 # cloudflare
 export CLOUDFLARE_ACCOUNT_ID=2987919c57179393623a794120699ef2
+
+# fzf shell integration: Ctrl-R history, Ctrl-T files, Alt-C directories.
+if (( $+commands[fzf] )); then
+  source <(fzf --zsh 2>/dev/null)
+fi

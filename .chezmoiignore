@@ -1,0 +1,2 @@
+# WeeChat writes timestamped theme backups automatically; don't track them.
+.config/weechat/themes/backup-*.theme

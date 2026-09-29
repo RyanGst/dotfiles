@@ -1,2 +1,5 @@
 # WeeChat writes timestamped theme backups automatically; don't track them.
 .config/weechat/themes/backup-*.theme
+
+# Per-machine IRC client cert + private key (SASL EXTERNAL); never sync.
+.config/weechat/certs

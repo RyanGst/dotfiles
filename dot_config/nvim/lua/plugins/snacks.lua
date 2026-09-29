@@ -87,12 +87,39 @@ return {
         chunk = { enabled = true },
       },
     },
-    -- stylua: ignore
     keys = {
-      { "<leader><space>", function() Snacks.picker.smart() end, desc = "Smart Open" },
-      { "<leader>dd", function() Snacks.picker.grep({search = "^(?!\\s*--).*\\b(bt|dd)\\(", args = {"-P"}, live = false, ft = "lua"}) end, desc = "Debug Searcher" },
-      { "<leader>t", function() Snacks.scratch({ icon = " ", name = "Todo", ft = "markdown", file = "~/dot/TODO.md" }) end, desc = "Todo List" },
-      { "<leader>ct", function() local dir = vim.fn.expand("%:p:h") if dir == "" or vim.bo.buftype ~= "" then dir = vim.fn.getcwd() end Snacks.terminal(nil, { cwd = dir }) end, desc = "Terminal (file dir)" },
-   },
+      {
+        "<leader><space>",
+        function()
+          Snacks.picker.smart()
+        end,
+        desc = "Smart Open",
+      },
+      {
+        "<leader>dd",
+        function()
+          Snacks.picker.grep({ search = "^(?!\\s*--).*\\b(bt|dd)\\(", args = { "-P" }, live = false, ft = "lua" })
+        end,
+        desc = "Debug Searcher",
+      },
+      {
+        "<leader>t",
+        function()
+          Snacks.scratch({ icon = " ", name = "Todo", ft = "markdown", file = "~/dot/TODO.md" })
+        end,
+        desc = "Todo List",
+      },
+      {
+        "<leader>ct",
+        function()
+          local dir = vim.fn.expand("%:p:h")
+          if dir == "" or vim.bo.buftype ~= "" then
+            dir = vim.fn.getcwd()
+          end
+          Snacks.terminal(nil, { cwd = dir })
+        end,
+        desc = "Terminal (file dir)",
+      },
+    },
   },
 }

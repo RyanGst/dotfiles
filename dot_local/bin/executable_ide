@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 AGENT="claude --ide"
 readonly SIDEBAR_PERCENT=20
-[[ "$1" == "-o" || "$1" == "--opencode" ]] && { AGENT="opencode --port"; shift; }
+[[ "$1" == "-o" || "$1" == "--opencode" ]] && { AGENT="opencode"; shift; }
 [[ "$1" == "-c" || "$1" == "--claude" ]]  && shift
 
 DIR="${${1:-$PWD}:A}"

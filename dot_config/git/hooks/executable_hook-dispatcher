@@ -1,0 +1,56 @@
+#!/bin/sh
+
+set -eu
+
+hook_name=${0##*/}
+
+if [ "$hook_name" = "prepare-commit-msg" ]; then
+	message_file=$1
+	message_tmp=$(mktemp "$message_file.claude.XXXXXX")
+	trap 'rm -f "$message_tmp"' EXIT HUP INT TERM
+
+	awk '
+		$0 == "🤖 Generated with Claude Code" { next }
+		tolower($0) == "co-authored-by: claude <noreply@anthropic.com>" { next }
+		{ lines[++count] = $0 }
+		END {
+			while (count > 0 && lines[count] == "") {
+				count--
+			}
+			for (line = 1; line <= count; line++) {
+				print lines[line]
+			}
+			if (count > 0) {
+				print ""
+			}
+			print "🤖 Generated with Claude Code"
+			print ""
+			print "Co-Authored-By: Claude <noreply@anthropic.com>"
+		}
+	' "$message_file" >"$message_tmp"
+
+	cat "$message_tmp" >"$message_file"
+	rm -f "$message_tmp"
+	trap - EXIT HUP INT TERM
+fi
+
+repo_hooks_path=$(git config --local --get hookchain.repoHooksPath 2>/dev/null || true)
+if [ -n "$repo_hooks_path" ]; then
+	case "$repo_hooks_path" in
+		~/*) repo_hooks_dir=$HOME/${repo_hooks_path#\~/} ;;
+		/*) repo_hooks_dir=$repo_hooks_path ;;
+		*) repo_hooks_dir=$(pwd -P)/$repo_hooks_path ;;
+	esac
+else
+	common_dir=$(git rev-parse --git-common-dir 2>/dev/null) || exit 0
+	case "$common_dir" in
+		/*) ;;
+		*) common_dir=$(pwd -P)/$common_dir ;;
+	esac
+	repo_hooks_dir=$common_dir/hooks
+fi
+
+repo_hook=$repo_hooks_dir/$hook_name
+if [ -x "$repo_hook" ]; then
+	exec "$repo_hook" "$@"
+fi

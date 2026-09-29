@@ -1,6 +1,4 @@
--- Keymaps are automatically loaded on the VeryLazy event
--- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
--- Add any additional keymaps here
+-- Editor-wide mappings loaded on VeryLazy. Keep plugin mappings in their specs.
 
 vim.keymap.set("n", "<leader>fN", function()
   local dir = vim.fn.expand("%:h")
